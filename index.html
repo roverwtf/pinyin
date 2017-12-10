@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width">
+<script src="jquery.js"></script>
+<script src="wordlist.js"></script>
+<script>
+var mode; 
+var current = 0;
+
+$(function(){
+	$(".select-mode button").click(function(){
+		mode = $(this).attr("data-mode");
+		$(".select-mode").hide();	
+		$(".study").show();
+		
+		if(mode==1){
+			$(".word-1").text(wordlist[0].hanzi);
+		} else {
+			$(".word-1").text(wordlist[0].pinyin);
+		}
+	});
+	
+	$("#next").click(function(){
+		$("#prev").show();
+		$(".word-2").text("");
+		$(".word-1").text(mode==1?wordlist[++current].hanzi:wordlist[++current].pinyin);
+		
+		if(current >= wordlist.length-1)
+			$(this).hide();
+	});
+	
+	$("#prev").click(function(){
+		$("#next").show();
+		$(".word-2").text("");
+		$(".word-1").text(mode==1?wordlist[--current].hanzi:wordlist[--current].pinyin);
+		
+		if(current <= 0)
+			$(this).hide();
+	});
+	
+	$("#answer").click(function(){
+		$(".word-2").text(mode==1?wordlist[current].pinyin:wordlist[current].hanzi);
+	});
+});
+</script>
+<style type="text/css">
+body, html{
+	min-width: 480px;	
+}
+
+#main{
+	margin: auto;	
+	font-size: 60px;
+	text-align: center;
+}
+
+.loading{
+	margin-top: 30%;
+}
+
+button{
+	font-size: 36px;
+	margin-bottom: 20px;
+}
+
+.study{
+	display: none;
+}
+
+.direction{
+	position: relative;	
+}
+
+#prev{
+	position: absolute;
+	left: 0px;	
+	display: none;
+}
+
+#next{
+	position: absolute;
+	right: 0px;	
+}
+
+#answer{
+	vertical-align: top;	
+}
+
+.word-1{
+	margin-bottom: 20px;	
+}
+</style>
+</head>
+<body>
+	<div id="main">
+		<div class="select-mode">
+			<button type="button" data-mode="1">漢字→拼音</button><br />
+			<button type="button" data-mode="2">拼音→漢字</button>
+		</div>	
+		<div class="study">
+			<div class="direction">
+				<button type="button" id="prev">上一個</button>
+				<button type="button" id="answer">答案</button>
+				<button type="button" id="next">下一個</button>
+			</div>
+			<div class="word-1"></div>
+			<div class="word-2"></div>
+		</div>
+	</div>
+</body>
+</html>
